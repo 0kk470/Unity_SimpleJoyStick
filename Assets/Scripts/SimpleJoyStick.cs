@@ -66,7 +66,7 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
         UpdateEventData(eventData);
     }
 
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
     public virtual void OnApplicationFocus(bool bFocus)
     {
         if(!bFocus)
@@ -87,23 +87,23 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
     private void UpdateEventData(PointerEventData eventData)
     {
         var UICamera = eventData.pressEventCamera;
-        Vector3 newStickPosition = UICamera.ScreenToWorldPoint(eventData.position);
-        Vector3 backGroundScreenPos = UICamera.WorldToScreenPoint(m_Background.position);
-        // Ignore Z Component
-        newStickPosition.z = m_Background.position.z;
+        Vector2 backGroundScreenPos = UICamera.WorldToScreenPoint(m_Background.position);
 
-        m_Direction = newStickPosition - m_Background.position;
+        m_Direction = eventData.position - backGroundScreenPos;
         m_Direction = m_Direction.normalized;
 
         float Distance = Vector2.Distance(eventData.position,backGroundScreenPos);
         if (Distance > m_fRadius)
         {
-            Vector3 offset = new Vector3(xAxis * m_fRadius, yAxis * m_fRadius, 0);
-            m_Stick.position = UICamera.ScreenToWorldPoint(backGroundScreenPos + offset);
+            m_Stick.anchoredPosition = new Vector3(xAxis * m_fRadius, yAxis * m_fRadius, 0);
         }
         else
         {
-            m_Stick.position = newStickPosition;
+            Vector2 tarPos;
+            if(RectTransformUtility.ScreenPointToLocalPointInRectangle(m_Background,eventData.position,UICamera,out tarPos))
+            {
+                m_Stick.anchoredPosition = tarPos;
+            }
         }
     }
 }
