@@ -26,7 +26,7 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
     public float yAxis { get { return m_Direction.y; } }
     public Vector2 direction { get { return m_Direction; } }
 
-    public bool isTouched { get { return bTouched; } }
+    public bool isMoved { get { return bTouched && direction != Vector2.zero; } }
     public bool bIsLockPosition { get { return IsLockPostion; } set { this.IsLockPostion = value;} }
 
 
@@ -53,7 +53,7 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
             newPosition.z = m_Background.position.z;
             m_Background.position = newPosition;
         }
-        UpdateEventData(eventData);
+        //UpdateEventData(eventData);
     }
 
     public virtual void OnPointerUp(PointerEventData eventData)

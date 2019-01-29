@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(m_joyStick.isTouched)
+        if (m_joyStick.isMoved)
         {
             transform.forward = new Vector3(m_joyStick.xAxis, transform.forward.y, m_joyStick.yAxis);
             transform.position += new Vector3(m_joyStick.xAxis, 0, m_joyStick.yAxis) * fMoveSpeed;
