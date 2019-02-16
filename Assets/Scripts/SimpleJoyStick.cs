@@ -53,7 +53,6 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
             newPosition.z = m_Background.position.z;
             m_Background.position = newPosition;
         }
-        //UpdateEventData(eventData);
     }
 
     public virtual void OnPointerUp(PointerEventData eventData)
