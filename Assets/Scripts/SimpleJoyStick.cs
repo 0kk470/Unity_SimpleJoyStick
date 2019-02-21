@@ -14,20 +14,20 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
     [SerializeField]
     private RectTransform m_Background;
     [SerializeField]
-    private bool    IsLockPostion = false;
+    private bool    m_IsLockPostion = false;
 
-    private bool    bTouched = false;
+    private bool    m_Touched = false;
     private Vector3 m_OriginPos;
     private Vector2 m_Direction;
     private float   m_fRadius;
-
+    private int     m_iPointerID = -100;
 
     public float xAxis { get { return m_Direction.x; } }
     public float yAxis { get { return m_Direction.y; } }
     public Vector2 direction { get { return m_Direction; } }
 
-    public bool isMoved { get { return bTouched && direction != Vector2.zero; } }
-    public bool bIsLockPosition { get { return IsLockPostion; } set { this.IsLockPostion = value;} }
+    public bool isMoved { get { return m_Touched && direction != Vector2.zero; } }
+    public bool IsLockPosition { get { return m_IsLockPostion; } set { this.m_IsLockPostion = value;} }
 
 
 
@@ -45,8 +45,11 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        bTouched = true;
-        if (!IsLockPostion)
+        if (m_Touched)
+            return;
+        m_Touched = true;
+        m_iPointerID = eventData.pointerId;
+        if (!m_IsLockPostion)
         {
             Vector3 newPosition = eventData.pressEventCamera.ScreenToWorldPoint(eventData.position);
             // Ignore Z Component
@@ -57,27 +60,30 @@ public class SimpleJoyStick : UIBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {
-        Reset();
+        if(m_iPointerID == eventData.pointerId)
+            ResetUI();
     }
 
     public virtual void OnDrag(PointerEventData eventData)
     {
-        UpdateEventData(eventData);
+        if (m_iPointerID == eventData.pointerId)
+            UpdateEventData(eventData);
     }
 
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
     public virtual void OnApplicationFocus(bool bFocus)
     {
         if(!bFocus)
         {
-            Reset();
+            ResetUI();
         }
     }
 #endif
 
-    private void Reset()
+    private void ResetUI()
     {
-        bTouched = false;
+        m_Touched = false;
+        m_iPointerID = -100;
         m_Background.position = m_OriginPos;
         m_Direction = Vector2.zero;
         m_Stick.position = m_OriginPos;
