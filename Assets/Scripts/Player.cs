@@ -9,7 +9,7 @@ public class Player : MonoBehaviour {
     private SimpleJoyStick m_joyStick;
 	// Use this for initialization
 	void Start () {
-		
+        
 	}
 	
 	// Update is called once per frame
@@ -17,7 +17,7 @@ public class Player : MonoBehaviour {
         if (m_joyStick.isMoved)
         {
             transform.forward = new Vector3(m_joyStick.xAxis, transform.forward.y, m_joyStick.yAxis);
-            transform.position += new Vector3(m_joyStick.xAxis, 0, m_joyStick.yAxis) * fMoveSpeed;
+            transform.position += new Vector3(m_joyStick.xAxis, 0, m_joyStick.yAxis) * fMoveSpeed *Time.deltaTime;
         }
 	}
 }

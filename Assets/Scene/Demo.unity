@@ -987,6 +987,11 @@ Prefab:
       propertyPath: m_joyStick
       value: 
       objectReference: {fileID: 932808925}
+    - target: {fileID: 114375408415821008, guid: 01be28abbc54f564e82e2de9f12b3dbe,
+        type: 2}
+      propertyPath: fMoveSpeed
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 01be28abbc54f564e82e2de9f12b3dbe, type: 2}
   m_IsPrefabParent: 0
